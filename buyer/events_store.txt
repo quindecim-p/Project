@@ -1,0 +1,3 @@
+{"aggregateId":"0bf66deb-ab83-46ce-aaaa-2ab909b4e223","type":"com.example.domain.model.events.BuyerCreated","payload":"{\"buyerId\":\"0bf66deb-ab83-46ce-aaaa-2ab909b4e223\",\"name\":\"UserOK\"}"}
+{"aggregateId":"0bf66deb-ab83-46ce-aaaa-2ab909b4e223","type":"com.example.domain.model.events.MoneyDeposited","payload":"{\"buyerId\":\"0bf66deb-ab83-46ce-aaaa-2ab909b4e223\",\"amount\":1000}"}
+{"aggregateId":"1dd20cdd-04cf-440a-a37e-58378595d7f3","type":"com.example.domain.model.events.BuyerCreated","payload":"{\"buyerId\":\"1dd20cdd-04cf-440a-a37e-58378595d7f3\",\"name\":\"USER123\"}"}

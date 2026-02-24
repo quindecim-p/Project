@@ -1,0 +1,41 @@
+package com.example.infrastructure.config;
+
+import com.example.application.usecases.BuyHouseUseCase;
+import com.example.application.usecases.CreateHouseUseCase;
+import com.example.application.usecases.DeleteHouseUseCase;
+import com.example.application.usecases.UpdateHouseUseCase;
+import com.example.domain.ports.BuyerPort;
+import com.example.domain.ports.EventStore;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class DomainConfig {
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
+    public CreateHouseUseCase createHouseUseCase(EventStore store) {
+        return new CreateHouseUseCase(store);
+    }
+
+    @Bean
+    public UpdateHouseUseCase updateHouseUseCase(EventStore store) {
+        return new UpdateHouseUseCase(store);
+    }
+
+    @Bean
+    public DeleteHouseUseCase deleteHouseUseCase(EventStore store) {
+        return new DeleteHouseUseCase(store);
+    }
+
+    @Bean
+    public BuyHouseUseCase buyHouseUseCase(BuyerPort buyerPort, EventStore store) {
+        return new BuyHouseUseCase(buyerPort, store);
+    }
+
+}
