@@ -16,4 +16,5 @@ message PaymentResponse {
 
 service BuyerGrpcService {
   rpc Withdraw(PaymentRequest) returns (PaymentResponse);
+  rpc Deposit (PaymentRequest) returns (PaymentResponse);
 }

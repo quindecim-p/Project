@@ -27,7 +27,6 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
-    restart: always
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0

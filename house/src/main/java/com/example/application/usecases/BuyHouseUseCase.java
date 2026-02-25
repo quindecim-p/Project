@@ -10,11 +10,9 @@ import java.util.UUID;
 
 public class BuyHouseUseCase {
 
-    private final BuyerPort buyerPort;
     private final EventStore eventStore;
 
-    public BuyHouseUseCase(BuyerPort buyerPort, EventStore eventStore) {
-        this.buyerPort = buyerPort;
+    public BuyHouseUseCase(EventStore eventStore) {
         this.eventStore = eventStore;
 
     }
@@ -28,8 +26,6 @@ public class BuyHouseUseCase {
         }
 
         var house = new House(id, history);
-
-        buyerPort.requestPayment(buyerId, house.getPrice());
 
         house.sellTo(buyerId);
 

@@ -1,5 +1,6 @@
 package com.example.infrastructure.config;
 
+import com.example.application.sagas.BuyHouseSaga;
 import com.example.application.usecases.BuyHouseUseCase;
 import com.example.application.usecases.CreateHouseUseCase;
 import com.example.application.usecases.DeleteHouseUseCase;
@@ -34,8 +35,15 @@ public class DomainConfig {
     }
 
     @Bean
-    public BuyHouseUseCase buyHouseUseCase(BuyerPort buyerPort, EventStore store) {
-        return new BuyHouseUseCase(buyerPort, store);
+    public BuyHouseUseCase buyHouseUseCase(EventStore store) {
+        return new BuyHouseUseCase(store);
+    }
+
+    @Bean
+    public BuyHouseSaga buyHouseSaga(EventStore eventStore,
+                                     BuyerPort buyerPort,
+                                     BuyHouseUseCase buyHouseUseCase) {
+        return new BuyHouseSaga(eventStore, buyerPort, buyHouseUseCase);
     }
 
 }

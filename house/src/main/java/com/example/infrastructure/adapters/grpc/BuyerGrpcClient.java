@@ -6,6 +6,7 @@ import com.example.domain.ports.BuyerPort;
 import com.example.grpc.BuyerGrpcServiceGrpc;
 import com.example.grpc.PaymentRequest;
 import com.example.grpc.PaymentResponse;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
@@ -34,10 +35,35 @@ public class BuyerGrpcClient implements BuyerPort {
         }
     }
 
-    public void paymentFallback(UUID buyerId, BigDecimal amount, Throwable t) {
-        System.err.println("--> Fallback сработал! Причина: " + t.getMessage());
-        throw new ServiceUnavailableException(t.getMessage());
+    @Override
+    public void compensatePayment(UUID buyerId, BigDecimal amount) {
+        try {
+            PaymentRequest request = PaymentRequest.newBuilder()
+                    .setBuyerId(buyerId.toString())
+                    .setAmount(amount.toString())
+                    .build();
+
+            PaymentResponse response = stub.deposit(request);
+
+            if (!response.getSuccess()) {
+                System.err.println("Не удалось вернуть деньги покупателю " + buyerId);
+            }
+        } catch (Exception e) {
+            System.err.println("Сервис недоступен при возврате денег: " + e.getMessage());
+        }
     }
 
+    public void paymentFallback(UUID buyerId, BigDecimal amount, Throwable t) {
+        if (t instanceof BusinessException) {
+            throw (BusinessException) t;
+        }
+
+        if (t instanceof CallNotPermittedException) {
+            throw new ServiceUnavailableException("Сервис платежей перегружен, попробуйте позже");
+        }
+
+        System.err.println("--> Fallback сработал! Причина: " + t.getMessage());
+        throw new ServiceUnavailableException("Сервис платежей временно недоступен: " + t.getMessage());
+    }
 
 }
