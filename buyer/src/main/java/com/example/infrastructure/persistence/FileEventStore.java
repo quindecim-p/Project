@@ -61,7 +61,7 @@ public class FileEventStore implements EventStore {
 
         if (!file.exists()) return List.of();
 
-        try (var lines = Files.lines(file.toPath())) {
+        try (var lines = Files.lines(file.toPath())) { // Stream<String>
             return lines
                     .map(this::parseLine)
                     .filter(entry -> entry != null && entry.aggregateId.equals(aggregateId))

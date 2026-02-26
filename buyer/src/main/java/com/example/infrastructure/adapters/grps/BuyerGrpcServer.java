@@ -11,7 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Slf4j
 @GrpcService
@@ -36,9 +39,16 @@ public class BuyerGrpcServer extends BuyerGrpcServiceGrpc.BuyerGrpcServiceImplBa
     private void handleTransaction(PaymentRequest request,
                                    StreamObserver<PaymentResponse> responseObserver,
                                    TransactionExecutor executor) {
+
+        Supplier<Instant> timeSupplier = Instant::now;
+        Consumer<Object> auditLog = data -> log.info("[Time: {}] Data: {}", timeSupplier.get(), data);
+
         try {
             UUID buyerId = UUID.fromString(request.getBuyerId());
             BigDecimal amount = new BigDecimal(request.getAmount());
+
+            auditLog.accept("Buyer ID = " + buyerId);
+            auditLog.accept("Amount = " + amount);
 
             executor.execute(buyerId, amount);
 
@@ -58,6 +68,32 @@ public class BuyerGrpcServer extends BuyerGrpcServiceGrpc.BuyerGrpcServiceImplBa
         }
         responseObserver.onCompleted();
     }
+
+//    private void handleTransaction(PaymentRequest request,
+//                                   StreamObserver<PaymentResponse> responseObserver,
+//                                   BiConsumer<UUID, BigDecimal> executor) {
+//        try {
+//            UUID buyerId = UUID.fromString(request.getBuyerId());
+//            BigDecimal amount = new BigDecimal(request.getAmount());
+//
+//            executor.accept(buyerId, amount);
+//
+//            PaymentResponse response = PaymentResponse.newBuilder()
+//                    .setSuccess(true)
+//                    .build();
+//
+//            responseObserver.onNext(response);
+//        } catch (Exception e) {
+//            log.error("GRPC Error: ", e);
+//            PaymentResponse response = PaymentResponse.newBuilder()
+//                    .setSuccess(false)
+//                    .setMessage(e.getMessage())
+//                    .build();
+//
+//            responseObserver.onNext(response);
+//        }
+//        responseObserver.onCompleted();
+//    }
 
     @FunctionalInterface
     interface TransactionExecutor {
