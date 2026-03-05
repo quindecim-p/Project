@@ -11,8 +11,9 @@ public class ExternalValidationAdapter implements ExternalValidationPort {
     @Override
     public void checkHouseEncumbrances(UUID houseId) {
         try {
-            System.out.println("Начинаю проверку дома " + houseId + " (займет 5 сек)...");
-            Thread.sleep(5000);
+            System.out.println("Начинаю проверку дома " + houseId + " (займет 3 секунды)...");
+            //Thread.sleep(15000);
+            Thread.sleep(3000);
             System.out.println("Дом " + houseId + " чист!");
         } catch (InterruptedException e) {
             System.err.println("ЗАПРОС ПРОВЕРКИ ДОМА ПРЕРВАН!");
@@ -25,7 +26,8 @@ public class ExternalValidationAdapter implements ExternalValidationPort {
         try {
             System.out.println("Проверяю покупателя " + buyerId + "...");
             Thread.sleep(1000);
-            throw new RuntimeException("У покупателя арестованы счета!");
+            System.out.println("Покупатель " + buyerId + " проверен!");
+            //throw new RuntimeException("У покупателя арестованы счета!");
         } catch (InterruptedException e) {
             System.err.println("ЗАПРОС ПРОВЕРКИ ПОКУПАТЕЛЯ ПРЕРВАН!");
             Thread.currentThread().interrupt();

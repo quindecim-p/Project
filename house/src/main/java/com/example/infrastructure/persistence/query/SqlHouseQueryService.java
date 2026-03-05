@@ -40,6 +40,7 @@ public class SqlHouseQueryService implements HouseQueryService {
             return Optional.empty();
         }
     }
+
     @Override
     public List<HouseResponse> findAll() {
         String sql = "SELECT * FROM houses_view";
