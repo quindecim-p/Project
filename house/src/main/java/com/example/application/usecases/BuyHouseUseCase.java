@@ -2,7 +2,6 @@ package com.example.application.usecases;
 
 import com.example.domain.model.House;
 import com.example.domain.model.exceptions.EntityNotFoundException;
-import com.example.domain.ports.BuyerPort;
 import com.example.domain.ports.EventStore;
 import jakarta.transaction.Transactional;
 
@@ -14,7 +13,6 @@ public class BuyHouseUseCase {
 
     public BuyHouseUseCase(EventStore eventStore) {
         this.eventStore = eventStore;
-
     }
 
     @Transactional

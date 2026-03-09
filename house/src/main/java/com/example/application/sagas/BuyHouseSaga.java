@@ -54,7 +54,7 @@ public class BuyHouseSaga {
 
         UUID transactionId = UUID.randomUUID();
 
-        runParallelValidations(houseId, buyerId);
+        // runParallelValidations(houseId, buyerId);
 
         try {
             buyerPort.requestPayment(buyerId, price, transactionId);

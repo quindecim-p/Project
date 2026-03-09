@@ -67,7 +67,7 @@ public class BuyerGrpcServer extends BuyerGrpcServiceGrpc.BuyerGrpcServiceImplBa
             sendResponse(responseObserver, true, "");
         } catch (Exception e) {
             if (!isDbUpdated) {
-                redisTemplate.delete(compKey);
+                redisTemplate.delete(withdrawKey);
             }
             log.error("Ошибка при списании: ", e);
             sendResponse(responseObserver, false, e.getMessage());
@@ -108,7 +108,7 @@ public class BuyerGrpcServer extends BuyerGrpcServiceGrpc.BuyerGrpcServiceImplBa
             sendResponse(responseObserver, true, "");
         } catch (Exception e) {
             if (!isDbUpdated) {
-                redisTemplate.delete(withdrawKey);
+                redisTemplate.delete(compKey);
             }
             log.error("Ошибка при компенсации: ", e);
             sendResponse(responseObserver, false, e.getMessage());
