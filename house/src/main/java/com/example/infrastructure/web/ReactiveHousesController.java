@@ -39,6 +39,9 @@
 //
 //    @GetMapping
 //    public Flux<HouseResponse> getAllHouses() {
-//        return reactiveQueryPort.findAll();
+//        log.info(">>> Запрос на получение домов ПРИНЯТ потоком: {}", Thread.currentThread().getName());
+//
+//        return reactiveQueryPort.findAll()
+//                .doOnNext(response -> log.info("<<< Возврат дома в потоке: {}", Thread.currentThread().getName()));
 //    }
 //}

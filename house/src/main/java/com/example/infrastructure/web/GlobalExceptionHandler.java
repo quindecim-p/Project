@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         ErrorResponse body = new ErrorResponse(
                 "InternalServerError",
-                "Произошла непредвиденная ошибка на сервере.",
+                "Произошла непредвиденная ошибка на сервере: " + ex.getMessage(),
                 System.currentTimeMillis()
         );
 

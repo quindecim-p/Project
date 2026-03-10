@@ -89,4 +89,8 @@ public class House {
 
     public UUID getId() { return id; }
     public BigDecimal getPrice() { return price; }
+
+    public boolean isSold() {
+        return isSold;
+    }
 }

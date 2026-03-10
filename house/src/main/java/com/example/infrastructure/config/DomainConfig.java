@@ -1,6 +1,7 @@
 package com.example.infrastructure.config;
 
 import com.example.application.ports.ExternalValidationPort;
+import com.example.application.sagas.AsyncBuyHouseSaga;
 import com.example.application.sagas.BuyHouseSaga;
 import com.example.application.usecases.BuyHouseUseCase;
 import com.example.application.usecases.CreateHouseUseCase;
@@ -46,6 +47,13 @@ public class DomainConfig {
                                      BuyHouseUseCase buyHouseUseCase,
                                      ExternalValidationPort externalValidationPort) {
         return new BuyHouseSaga(eventStore, buyerPort, buyHouseUseCase, externalValidationPort);
+    }
+
+    @Bean
+    public AsyncBuyHouseSaga aSyncbuyHouseSaga(EventStore eventStore,
+                                          BuyerPort buyerPort,
+                                          BuyHouseUseCase buyHouseUseCase) {
+        return new AsyncBuyHouseSaga(eventStore, buyerPort, buyHouseUseCase);
     }
 
 }

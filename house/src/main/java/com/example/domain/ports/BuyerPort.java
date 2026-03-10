@@ -4,6 +4,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public interface BuyerPort {
-    void requestPayment(UUID buyerId, BigDecimal amount, UUID transactionId);
-    void compensatePayment(UUID buyerId, BigDecimal amount, UUID transactionId);
+    void requestPayment(UUID houseId, UUID buyerId, BigDecimal amount, UUID transactionId);
+    void compensatePayment(UUID houseId, UUID buyerId, BigDecimal amount, UUID transactionId);
 }

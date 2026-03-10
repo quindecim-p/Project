@@ -40,9 +40,14 @@
 //    @Override
 //    public Flux<HouseResponse> findAll() {
 //        String sql = "SELECT * FROM houses_view";
+//
+//        log.info(">>> Начинаем обращение к БД в потоке: {}", Thread.currentThread().getName());
+//
 //        return databaseClient.sql(sql)
 //                .map((row, metadata) -> mapRow(row))
-//                .all();
+//                .all()
+//                .delayElements(Duration.ofMillis(500))
+//                .doOnNext(house -> log.info(">>> Данные из БД ПОЛУЧЕНЫ в потоке: {}", Thread.currentThread().getName()));
 //    }
 //
 //    private HouseResponse mapRow(Row row) {

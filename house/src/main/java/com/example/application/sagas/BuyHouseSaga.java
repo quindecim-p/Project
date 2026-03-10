@@ -57,10 +57,10 @@ public class BuyHouseSaga {
         // runParallelValidations(houseId, buyerId);
 
         try {
-            buyerPort.requestPayment(buyerId, price, transactionId);
+            buyerPort.requestPayment(houseId, buyerId, price, transactionId);
         } catch (Exception e) {
             System.err.println("Сбой при списании. Запускаем отмену...");
-            executeCompensation(buyerId, price, transactionId);
+            executeCompensation(houseId, buyerId, price, transactionId);
             throw new BusinessException("Платеж отклонен или недоступен: " + e.getMessage());
         }
 
@@ -68,7 +68,7 @@ public class BuyHouseSaga {
             buyHouseUseCase.execute(houseId, buyerId);
         } catch (Exception e) {
             System.err.println("Ошибка при сохранении дома. Запускаем компенсацию " + price + "...");
-            executeCompensation(buyerId, price, transactionId);
+            executeCompensation(houseId, buyerId, price, transactionId);
             throw e;
         }
     }
@@ -131,10 +131,10 @@ public class BuyHouseSaga {
         }
     }
 
-    private void executeCompensation(UUID buyerId, BigDecimal price, UUID transactionId) {
+    private void executeCompensation(UUID houseId, UUID buyerId, BigDecimal price, UUID transactionId) {
         try {
             Runnable compensateTask = Retry.decorateRunnable(compensationRetry, () ->
-                    buyerPort.compensatePayment(buyerId, price, transactionId)
+                    buyerPort.compensatePayment(houseId, buyerId, price, transactionId)
             );
             compensateTask.run();
         } catch (Exception e) {

@@ -1,6 +1,7 @@
 package com.example.infrastructure.web;
 
 import com.example.application.ports.HouseQueryService;
+import com.example.application.sagas.AsyncBuyHouseSaga;
 import com.example.application.sagas.BuyHouseSaga;
 import com.example.application.usecases.CreateHouseUseCase;
 import com.example.application.usecases.DeleteHouseUseCase;
@@ -26,6 +27,7 @@ public class HousesController {
     private final UpdateHouseUseCase updateHouseUseCase;
     private final DeleteHouseUseCase deleteHouseUseCase;
     private final BuyHouseSaga buyHouseSaga;
+    private final AsyncBuyHouseSaga asyncBuyHouseSaga;
 
     private final HouseQueryService houseQueryService;
 
@@ -49,7 +51,8 @@ public class HousesController {
 
     @PostMapping("/{id}/buy")
     public ResponseEntity<Void> buyHouse(@PathVariable UUID id, @RequestBody BuyHouseRequest dto) {
-        buyHouseSaga.execute(id, dto.buyerId());
+        //buyHouseSaga.execute(id, dto.buyerId());
+        asyncBuyHouseSaga.execute(id, dto.buyerId());
         return ResponseEntity.ok().build();
     }
 

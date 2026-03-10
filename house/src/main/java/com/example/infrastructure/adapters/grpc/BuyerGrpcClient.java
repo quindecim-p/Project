@@ -8,6 +8,7 @@ import com.example.grpc.PaymentRequest;
 import com.example.grpc.PaymentResponse;
 import io.grpc.StatusRuntimeException;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,13 +16,14 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@Profile("gRPC")
 public class BuyerGrpcClient implements BuyerPort {
 
     @GrpcClient("buyer-service")
     private BuyerGrpcServiceGrpc.BuyerGrpcServiceBlockingStub stub;
 
     @Override
-    public void requestPayment(UUID buyerId, BigDecimal amount, UUID transactionId) {
+    public void requestPayment(UUID houseId, UUID buyerId, BigDecimal amount, UUID transactionId) {
         PaymentRequest request = PaymentRequest.newBuilder()
                 .setBuyerId(buyerId.toString())
                 .setAmount(amount.toString())
@@ -45,7 +47,7 @@ public class BuyerGrpcClient implements BuyerPort {
     }
 
     @Override
-    public void compensatePayment(UUID buyerId, BigDecimal amount, UUID transactionId) {
+    public void compensatePayment(UUID houseId, UUID buyerId, BigDecimal amount, UUID transactionId) {
         PaymentRequest request = PaymentRequest.newBuilder()
                 .setBuyerId(buyerId.toString())
                 .setAmount(amount.toString())
