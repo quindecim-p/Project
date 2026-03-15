@@ -51,8 +51,8 @@ public class HousesController {
 
     @PostMapping("/{id}/buy")
     public ResponseEntity<Void> buyHouse(@PathVariable UUID id, @RequestBody BuyHouseRequest dto) {
-        //buyHouseSaga.execute(id, dto.buyerId());
-        asyncBuyHouseSaga.execute(id, dto.buyerId());
+        buyHouseSaga.execute(id, dto.buyerId());
+        //asyncBuyHouseSaga.execute(id, dto.buyerId());
         return ResponseEntity.ok().build();
     }
 

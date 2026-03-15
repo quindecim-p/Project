@@ -1,4 +1,4 @@
-package com.example.infrastructure.adapters.validation;
+package com.example.infrastructure.adapters;
 
 import com.example.application.ports.ExternalValidationPort;
 import org.springframework.stereotype.Component;
