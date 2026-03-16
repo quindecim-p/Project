@@ -33,20 +33,20 @@ public class ReactiveSqlHouseQueryAdapter implements ReactiveHouseQueryPort {
                 .bind(0, id)
                 .map((row, metadata) -> mapRow(row))
                 .one()
-                .delayElement(Duration.ofSeconds(5))
+                //.delayElement(Duration.ofSeconds(5))
                 .doOnNext(house -> log.info(">>> Данные из БД ПОЛУЧЕНЫ в потоке: {}", Thread.currentThread().getName()));
     }
 
     @Override
     public Flux<HouseResponse> findAll() {
-        String sql = "SELECT * FROM houses_view";
+        String sql = "SELECT * FROM houses_view, pg_sleep(0.5)";
 
         log.info(">>> Начинаем обращение к БД в потоке: {}", Thread.currentThread().getName());
 
         return databaseClient.sql(sql)
                 .map((row, metadata) -> mapRow(row))
                 .all()
-                .delayElements(Duration.ofMillis(500))
+                //.delayElements(Duration.ofMillis(500))
                 .doOnNext(house -> log.info(">>> Данные из БД ПОЛУЧЕНЫ в потоке: {}", Thread.currentThread().getName()));
     }
 

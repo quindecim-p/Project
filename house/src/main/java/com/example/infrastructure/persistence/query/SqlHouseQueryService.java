@@ -43,7 +43,7 @@ public class SqlHouseQueryService implements HouseQueryService {
 
     @Override
     public List<HouseResponse> findAll() {
-        String sql = "SELECT * FROM houses_view";
+        String sql = "SELECT * FROM houses_view, pg_sleep(0.5)";
         return jdbc.query(sql, houseRowMapper);
     }
 }
